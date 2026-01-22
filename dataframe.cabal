@@ -1,13 +1,13 @@
 cabal-version:      2.4
 name:               dataframe
-version:            0.4.0.7
+version:            0.4.0.10
 
 synopsis: A fast, safe, and intuitive DataFrame library.
 
 description: A fast, safe, and intuitive DataFrame library for exploratory data analysis.
 
 bug-reports: https://github.com/mchav/dataframe/issues
-license:            GPL-3.0-or-later
+license:            MIT
 license-file:       LICENSE
 author:             Michael Chavinda
 maintainer:         mschavinda@gmail.com
@@ -17,6 +17,7 @@ category: Data
 tested-with: GHC ==9.4.8 || ==9.6.7 || ==9.8.4 || ==9.10.3 || ==9.12.2
 extra-doc-files: CHANGELOG.md README.md
 extra-source-files: cbits/process_csv.h
+                    data/titanic/*.csv
                     tests/data/*.csv
                     tests/data/*.tsv
                     tests/data/*.parquet
@@ -76,10 +77,10 @@ library
                     DataFrame.IO.JSON,
                     DataFrame.IO.Unstable.CSV,
                     DataFrame.IO.Parquet,
-                    DataFrame.IO.Parquet.Binary
-                    DataFrame.IO.Parquet.Dictionary
-                    DataFrame.IO.Parquet.Levels
-                    DataFrame.IO.Parquet.Thrift
+                    DataFrame.IO.Parquet.Binary,
+                    DataFrame.IO.Parquet.Dictionary,
+                    DataFrame.IO.Parquet.Levels,
+                    DataFrame.IO.Parquet.Thrift,
                     DataFrame.IO.Parquet.ColumnStatistics,
                     DataFrame.IO.Parquet.Compression,
                     DataFrame.IO.Parquet.Encoding,
@@ -115,7 +116,10 @@ library
                       zlib >= 0.5 && < 1,
                       zstd >= 0.1.2.0 && < 0.2,
                       mmap >= 0.5.8 && < 0.6,
-                      parallel >= 3.2.2.0 && < 5
+                      parallel >= 3.2.2.0 && < 5,
+                      filepath >= 1.4 && < 2,
+                      Glob >= 0.10 && < 1,
+
     hs-source-dirs:   src
     c-sources:        cbits/process_csv.c
     include-dirs:     cbits
@@ -135,6 +139,16 @@ executable dataframe-benchmark-example
     default-language: Haskell2010
     ghc-options: -rtsopts -threaded -with-rtsopts=-N
 
+executable synthesis
+    import: warnings
+    main-is: Synthesis.hs
+    build-depends:    base >= 4 && < 5,
+                      dataframe ^>= 0.4,
+                      random >= 1 && < 2,
+                      text >= 2.0 && < 3
+    hs-source-dirs:   app
+    default-language: Haskell2010
+    ghc-options: -rtsopts -threaded -with-rtsopts=-N
 
 executable dataframe
     import: warnings
