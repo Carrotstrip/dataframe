@@ -134,7 +134,8 @@ lit = TExpr . Lit
 
 -- | Conditional expression.
 ifThenElse ::
-    (Columnable a) => TExpr cols Bool -> TExpr cols a -> TExpr cols a -> TExpr cols a
+    (Columnable a) =>
+    TExpr cols Bool -> TExpr cols a -> TExpr cols a -> TExpr cols a
 ifThenElse (TExpr c) (TExpr t) (TExpr e) = TExpr (If c t e)
 
 -------------------------------------------------------------------------------
